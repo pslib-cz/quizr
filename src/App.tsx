@@ -9,7 +9,8 @@ function App() {
     <HashRouter>
       <div className="app">
         <header className="app-header">
-          <h1>Quizr - Orientační závod</h1>
+          <h1>Noc vědců &ndash; cesta bohatství</h1>
+          <p className='logo'>&nbsp;</p>
         </header>
         <main className="app-main">
           <Routes>

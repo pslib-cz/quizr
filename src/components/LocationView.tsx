@@ -29,9 +29,9 @@ const LocationView = () => {
     setLocation(foundLocation);
 
     // Pokud je to startovní lokace (id: 1), resetuj data
-    if (foundLocation.id === 1) {
-      WayStorage.resetWay();
-    }
+    //if (foundLocation.id === 1) {
+    //  WayStorage.resetWay();
+    //}
 
     // Najít otázku pro tuto lokaci
     const foundQuery = queries.find(q => q.key === code);
@@ -100,7 +100,7 @@ const LocationView = () => {
       <div className="location-view final-location">
         <h2>{location.name}</h2>
         <div className="final-message">
-          <p>🎉 Gratulujeme! Dokončili jste orientační závod!</p>
+          <p>🎉 Cíl!</p>
           <p>{location.nextway}</p>
         </div>
         
@@ -179,28 +179,29 @@ const LocationView = () => {
           <h4>Následující lokace:</h4>
           <p>{location.nextway}</p>
           <button onClick={handleNextLocation} className="btn btn-primary">
-            Pokračovat na další lokaci
+            %debug% další lokace
           </button>
         </div>
       )}
 
       <div className="navigation">
-        <div className="manual-code-form">
-          <form onSubmit={handleManualCodeSubmit}>
+        <div className="actions">
+          <Link to="/scan" className="btn btn-primary">Skenovat QR kód</Link>        
+          <span>nebo</span>
+          <form className='form-code' onSubmit={handleManualCodeSubmit}>
             <input
               type="text"
               value={manualCode}
               onChange={(e) => setManualCode(e.target.value)}
-              placeholder="Zadejte kód lokace"
+              placeholder="zadat"
               className="code-input"
             />
             <button type="submit" className="btn btn-secondary">Přejít</button>
           </form>
         </div>
 
-        <div className="actions">
-          <Link to="/scan" className="btn btn-secondary">Skenovat QR kód</Link>
-          <Link to="/summary" className="btn btn-secondary">Zobrazit souhrn</Link>
+        <div className="actions actions--100">
+          <Link to="/summary" className="btn btn-secondary btn-block">Zobrazit souhrn</Link>
         </div>
       </div>
     </div>

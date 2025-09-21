@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { locations, queries } from '../data';
+import { Link, useNavigate } from 'react-router-dom';
+//import { locations, queries } from '../data';
+import { locations } from '../data';
 import { WayStorage } from '../wayStorage';
 import type { Way, Waypoint, Location } from '../types';
 
@@ -9,6 +10,8 @@ type SortOrder = 'completion' | 'expected';
 const SummaryView = () => {
   const [way, setWay] = useState<Way>([]);
   const [sortOrder, setSortOrder] = useState<SortOrder>('expected');
+  const [showResetModal, setShowResetModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const currentWay = WayStorage.loadWay();
@@ -43,15 +46,15 @@ const SummaryView = () => {
     }
   };
 
-  const getAnswerText = (locationKey: string, choice: string | null): string => {
-    if (!choice) return '-';
+  // const getAnswerText = (locationKey: string, choice: string | null): string => {
+  //   if (!choice) return '-';
     
-    const query = queries.find(q => q.key === locationKey);
-    if (!query) return choice;
+  //   const query = queries.find(q => q.key === locationKey);
+  //   if (!query) return choice;
     
-    const answer = query.answers.find(a => a.choice === choice);
-    return answer ? `${choice}: ${answer.description}` : choice;
-  };
+  //   const answer = query.answers.find(a => a.choice === choice);
+  //   return answer ? `${choice}: ${answer.description}` : choice;
+  // };
 
   const getStatusColor = (waypoint: Waypoint): string => {
     if (waypoint.choice === null) return 'not-attempted';
@@ -65,6 +68,16 @@ const SummaryView = () => {
 
   const completedCount = way.filter(w => w.choice !== null).length;
   const correctCount = way.filter(w => w.correct === true).length;
+
+  const handleResetConfirm = () => {
+    WayStorage.resetWay();
+    setShowResetModal(false);
+    navigate('/location/A001');
+  };
+
+  const handleResetCancel = () => {
+    setShowResetModal(false);
+  };
 
   return (
     <div className="summary-view">
@@ -102,63 +115,100 @@ const SummaryView = () => {
         </label>
       </div>
 
-      <div className="summary-table">
-        <div className="table-header">
-          <div className="col-order">
-            {sortOrder === 'completion' ? 'Pořadí plnění' : 'Očekávané pořadí'}
-          </div>
-          <div className="col-location">Lokace</div>
-          <div className="col-code">Kód</div>
-          <div className="col-answer">Odpověď</div>
-          <div className="col-status">Výsledek</div>
-        </div>
-
+      <table className="summary-table">
+        <thead>
+          <tr className="table-header">
+            <th className="col-order">
+              {/* {sortOrder === 'completion' ? 'Pořadí plnění' : 'Očekávané pořadí'} */}
+              #
+            </th>
+            <th className="col-location">Lokace</th>
+            <th className="col-code">Kód</th>
+            {/* <th className="col-answer">Odpověď</th> */}
+            <th className="col-status">Výsledek</th>
+          </tr>
+        </thead>
+        <tbody>
         {getSortedLocations().map((location) => (
-          <div 
+          <tr 
             key={location.id} 
             className={`table-row ${getStatusColor(location.waypoint)}`}
           >
-            <div className="col-order">
-              {sortOrder === 'completion' 
-                ? (location.waypoint.order || '-')
-                : location.id
+            <th className="col-order">
+              {
+                // sortOrder === 'completion' 
+                //   ? (location.waypoint.order || '-')
+                //   : location.id
+                location.id
               }
-            </div>
-            <div className="col-location">
-              <Link 
-                to={`/location/${location.key}`}
-                className="location-link"
-              >
-                {location.name}
-              </Link>
-            </div>
-            <div className="col-code">{location.key}</div>
-            <div className="col-answer">
+            </th>
+            <td className="col-location">
+              {location.waypoint.choice === null 
+                ? location.name
+                : <Link to={`/location/${location.key}`} className="location-link">{location.name}</Link>
+              }
+            </td>
+            <td className="col-code">
+              {location.waypoint.choice === null 
+                ? "\u2014"
+                : location.key
+              }
+            </td>
+            {/* <td className="col-answer">
               {getAnswerText(location.key, location.waypoint.choice)}
-            </div>
-            <div className="col-status">
-              <span className="status-icon">
-                {getStatusIcon(location.waypoint)}
-              </span>
-              <span className="status-text">
-                {location.waypoint.choice === null 
+            </td> */}
+            <td className="col-status">
+              <span className="status-icon" title={location.waypoint.choice === null 
                   ? 'Nevyřešeno'
                   : (location.waypoint.correct ? 'Správně' : 'Nesprávně')
-                }
+                }>
+                {getStatusIcon(location.waypoint)}
               </span>
-            </div>
-          </div>
+            </td>
+          </tr>
         ))}
-      </div>
+        </tbody>
+      </table>
 
-      <div className="actions">
-        <Link to="/location/A001" className="btn btn-primary">
-          Restart závodu
-        </Link>
+      <div className="actions actions--100">
         <Link to="/scan" className="btn btn-secondary">
           Skenovat QR kód
         </Link>
+        <button 
+          onClick={() => setShowResetModal(true)} 
+          className="btn btn-primary"
+        >
+          Restart závodu
+        </button>
       </div>
+
+      {/* Modal pro potvrzení restartu */}
+      {showResetModal && (
+        <div className="modal-overlay" onClick={handleResetCancel}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Potvrdit restart</h3>
+            <p>
+              Opravdu chcete restartovat závod? 
+              <br />
+              Všechny dosavadní odpovědi budou ztraceny.
+            </p>
+            <div className="modal-actions">
+              <button 
+                onClick={handleResetCancel} 
+                className="btn btn-secondary"
+              >
+                Zrušit
+              </button>
+              <button 
+                onClick={handleResetConfirm} 
+                className="btn btn-primary"
+              >
+                Ano, restartovat
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
