@@ -57,7 +57,7 @@ body {
 }
 
 .app-header {
-  background: url('logoSPStn.svg') no-repeat right 1rem center/auto, var(--header-gradient);
+  background: url('/quizr/logoSPStn.svg') no-repeat right 1rem center/auto, var(--header-gradient);
   color: white;
   padding: 1rem 2rem;
   box-shadow: var(--shadow);
@@ -79,7 +79,7 @@ body {
 
 @media (min-width: 530px) {
   .app-header {
-    background-image: url('logoSPS.svg'), var(--header-gradient);
+    background-image: url('/quizr/logoSPS.svg'), var(--header-gradient);
   }
   .app-header .logo {
     width: 175px;
