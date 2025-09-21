@@ -1,4 +1,5 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import WelcomeView from './components/WelcomeView';
 import LocationView from './components/LocationView';
 import SummaryView from './components/SummaryView';
 import QRScannerView from './components/QRScannerView';
@@ -14,7 +15,7 @@ function App() {
         </header>
         <main className="app-main">
           <Routes>
-            <Route path="/" element={<Navigate to="/location/A001" replace />} />
+            <Route path="/" element={<WelcomeView />} />
             <Route path="/location/:code" element={<LocationView />} />
             <Route path="/code/:code" element={<LocationView />} />
             <Route path="/summary" element={<SummaryView />} />

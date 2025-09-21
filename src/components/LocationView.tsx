@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { locations, queries } from '../data';
 import { WayStorage } from '../wayStorage';
@@ -7,13 +8,15 @@ import type { Location, Query, Answer } from '../types';
 const LocationView = () => {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
-  
+
   const [location, setLocation] = useState<Location | null>(null);
   const [query, setQuery] = useState<Query | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showOrderWarning, setShowOrderWarning] = useState(false);
   const [manualCode, setManualCode] = useState('');
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!code) return;
@@ -22,7 +25,7 @@ const LocationView = () => {
     const foundLocation = locations.find(loc => loc.key === code);
     if (!foundLocation) {
       // Pokud kód neexistuje, přesměruj na start
-      navigate('/location/A001', { replace: true });
+      navigate('/', { replace: true });
       return;
     }
 
@@ -54,7 +57,7 @@ const LocationView = () => {
 
     const way = WayStorage.loadWay();
     const expectedPrevious = locations.find(loc => loc.nextid === currentLocation.id);
-    
+
     if (expectedPrevious) {
       const previousWaypoint = way.find(w => w.id === expectedPrevious.id);
       if (!previousWaypoint?.choice) {
@@ -76,8 +79,19 @@ const LocationView = () => {
   const handleManualCodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (manualCode.trim()) {
-      navigate(`/location/${manualCode.trim().toUpperCase()}`);
-      setManualCode('');
+      const normalizedCode = manualCode.trim().toUpperCase();
+      
+      // Zkontrolovat, zda kód odpovídá platné lokaci
+      const foundLocation = locations.find(loc => loc.key === normalizedCode);
+      
+      if (foundLocation) {
+        navigate(`/location/${normalizedCode}`);
+        setManualCode('');
+      } else {
+        // Zobrazit chybu - kód neexistuje
+        setErrorMessage(`Kód "${normalizedCode}" nebyl nalezen. Zadejte platný kód lokace.`);
+        setShowErrorModal(true);
+      }
     }
   };
 
@@ -103,25 +117,28 @@ const LocationView = () => {
           <p>🎉 Cíl!</p>
           <p>{location.nextway}</p>
         </div>
-        
-        <div className="actions">
-          <Link to="/summary" className="btn btn-primary">
-            Zobrazit souhrn výsledků
-          </Link>
-        </div>
 
-        <div className="manual-code-form">
-          <form onSubmit={handleManualCodeSubmit}>
-            <input
-              type="text"
-              value={manualCode}
-              onChange={(e) => setManualCode(e.target.value)}
-              placeholder="Zadejte kód lokace"
-              className="code-input"
-            />
-            <button type="submit" className="btn btn-secondary">Přejít</button>
-          </form>
-          <Link to="/scan" className="btn btn-secondary">Skenovat QR kód</Link>
+        <div className="navigation">
+          <div className="actions actions--100">
+            <Link to="/summary"
+              className="btn btn-primary btn-block"
+            >Zobrazit souhrn výsledků</Link>
+          </div>
+
+          <div className="actions">
+            <Link to="/scan" className="btn btn-secondary btn-stretch">Skenovat QR kód</Link>
+            <span>nebo</span>
+            <form className='form-code' onSubmit={handleManualCodeSubmit}>
+              <input
+                type="text"
+                value={manualCode}
+                onChange={(e) => setManualCode(e.target.value)}
+                placeholder="zadat kód"
+                className="code-input"
+              />
+              <button type="submit" className="btn btn-secondary">Přejít</button>
+            </form>
+          </div>
         </div>
       </div>
     );
@@ -136,7 +153,7 @@ const LocationView = () => {
 
       {showOrderWarning && (
         <div className="warning">
-          ⚠️ Upozornění: Aktivovali jste lokaci mimo očekávané pořadí. 
+          ⚠️ Upozornění: Aktivovali jste lokaci mimo očekávané pořadí.
           Můžete tak vynechat jednu z předchozích lokací.
         </div>
       )}
@@ -144,18 +161,17 @@ const LocationView = () => {
       {query && (
         <div className="question-section">
           <h3>{query.question}</h3>
-          
+
           <div className="answers">
             {query.answers.map((answer) => (
               <button
                 key={answer.choice}
                 onClick={() => handleAnswerSelect(answer)}
                 disabled={isCompleted}
-                className={`answer-btn ${
-                  selectedAnswer === answer.choice 
+                className={`answer-btn ${selectedAnswer === answer.choice
                     ? (answer.isTrue ? 'correct' : 'incorrect')
                     : ''
-                } ${isCompleted ? 'disabled' : ''}`}
+                  } ${isCompleted ? 'disabled' : ''}`}
               >
                 <span className="choice">{answer.choice}</span>
                 <span className="description">{answer.description}</span>
@@ -165,8 +181,8 @@ const LocationView = () => {
 
           {isCompleted && (
             <div className="result">
-              {query.answers.find(a => a.choice === selectedAnswer)?.isTrue 
-                ? '✓ Správná odpověď!' 
+              {query.answers.find(a => a.choice === selectedAnswer)?.isTrue
+                ? '✓ Správná odpověď!'
                 : '✗ Nesprávná odpověď'
               }
             </div>
@@ -186,14 +202,14 @@ const LocationView = () => {
 
       <div className="navigation">
         <div className="actions">
-          <Link to="/scan" className="btn btn-primary">Skenovat QR kód</Link>        
+          <Link to="/scan" className="btn btn-primary btn-stretch">Skenovat QR kód</Link>
           <span>nebo</span>
           <form className='form-code' onSubmit={handleManualCodeSubmit}>
             <input
               type="text"
               value={manualCode}
               onChange={(e) => setManualCode(e.target.value)}
-              placeholder="zadat"
+              placeholder="zadat kód"
               className="code-input"
             />
             <button type="submit" className="btn btn-secondary">Přejít</button>
@@ -204,6 +220,25 @@ const LocationView = () => {
           <Link to="/summary" className="btn btn-secondary btn-block">Zobrazit souhrn</Link>
         </div>
       </div>
+
+      {/* Error Modal */}
+      {showErrorModal && createPortal(
+        <div className="modal-overlay" onClick={() => setShowErrorModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Neplatný kód</h3>
+            <p>{errorMessage}</p>
+            <div className="modal-actions">
+              <button 
+                onClick={() => setShowErrorModal(false)} 
+                className="btn btn-primary"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };

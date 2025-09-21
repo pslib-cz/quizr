@@ -99,6 +99,17 @@ const QRScannerView = () => {
     }
   };
 
+  const ActionsPart = (
+    <div className="actions">
+        <button onClick={() => navigate(-1)} className="btn btn-primary">
+          Zpět
+        </button>
+        <Link to="/summary" className="btn btn-secondary">
+          Zobrazit souhrn
+        </Link>
+    </div>
+  )
+
   if (!hasCamera) {
     return (
       <div className="qr-scanner-view">
@@ -107,15 +118,11 @@ const QRScannerView = () => {
         </div>
         
         <div className="scanner-error">
-          <p>❌ Kamera není dostupná na tomto zařízení</p>
+          <p>❌ Kamera není na tomto zařízení dostupná.</p>
           <p>Můžete zadat kód manuálně pomocí formuláře na stránce lokace.</p>
         </div>
 
-        <div className="actions">
-          <Link to="/" className="btn btn-primary">
-            Zpět na hlavní stránku
-          </Link>
-        </div>
+        {ActionsPart}
       </div>
     );
   }
@@ -162,14 +169,7 @@ const QRScannerView = () => {
         </ul>
       </div>
 
-      <div className="actions">
-        <Link to="/" className="btn btn-secondary">
-          Zpět na hlavní stránku
-        </Link>
-        <Link to="/summary" className="btn btn-secondary">
-          Zobrazit souhrn
-        </Link>
-      </div>
+      {ActionsPart}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 //import { locations, queries } from '../data';
 import { locations } from '../data';
@@ -72,7 +73,7 @@ const SummaryView = () => {
   const handleResetConfirm = () => {
     WayStorage.resetWay();
     setShowResetModal(false);
-    navigate('/location/A001');
+    navigate('/');
   };
 
   const handleResetCancel = () => {
@@ -183,7 +184,7 @@ const SummaryView = () => {
       </div>
 
       {/* Modal pro potvrzení restartu */}
-      {showResetModal && (
+      {showResetModal && createPortal(
         <div className="modal-overlay" onClick={handleResetCancel}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Potvrdit restart</h3>
@@ -207,7 +208,8 @@ const SummaryView = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
