@@ -104,6 +104,20 @@ const LocationView = () => {
     }
   };
 
+  const handleFinalSummary = () => {
+    if (!location) return;
+    
+    // Spočítaj počet nesprávnych odpovedí
+    const way = WayStorage.loadWay();
+    const incorrectCount = way.filter(w => w.choice !== null && w.correct === false).length;
+    
+    // Nastaviť correct: true pre aktuálnu lokáciu, ak je maximálne 1 nesprávna odpoveď
+    const finalCorrect = incorrectCount <= 1;
+    WayStorage.updateWaypoint(location.id, 'FINAL', finalCorrect);
+    
+    navigate('/summary');
+  };
+
   if (!location) {
     return <div className="loading">Načítání...</div>;
   }
@@ -120,9 +134,12 @@ const LocationView = () => {
 
         <div className="navigation">
           <div className="actions actions--100">
-            <Link to="/summary"
+            <button 
+              onClick={handleFinalSummary}
               className="btn btn-primary btn-block"
-            >Zobrazit souhrn výsledků</Link>
+            >
+              Zobrazit souhrn výsledků
+            </button>
           </div>
 
           <div className="actions">
@@ -168,8 +185,11 @@ const LocationView = () => {
                 key={answer.choice}
                 onClick={() => handleAnswerSelect(answer)}
                 disabled={isCompleted}
-                className={`answer-btn ${selectedAnswer === answer.choice
+                className={`answer-btn ${
+                  selectedAnswer === answer.choice
                     ? (answer.isTrue ? 'correct' : 'incorrect')
+                    : isCompleted && answer.isTrue
+                    ? 'correct'
                     : ''
                   } ${isCompleted ? 'disabled' : ''}`}
               >

@@ -11,7 +11,7 @@ function App() {
       <div className="app">
         <header className="app-header">
           <h1>Noc vědců &ndash; cesta bohatství</h1>
-          <p className='logo'>&nbsp;</p>
+          <a href="/quizr/" className='location-link'><p className='logo'>&nbsp;</p></a>
         </header>
         <main className="app-main">
           <Routes>
