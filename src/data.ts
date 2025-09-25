@@ -70,22 +70,22 @@ export const queries: Array<Query> =
   [
     {
       key: "B110",
-      question: "Otázka šachy: Která figura je nejcennější?",
+      question: "Co řeší přímá kinematická úloha v robotice?",
       answers: [
         {
           choice: "A",
-          description: "Dáma (královna)",
-          isTrue: true
+          description: "Výpočet potřebných kloubových souřadnic pro dosažení požadované pozice",
+          isTrue: false
         },
         {
           choice: "B",
-          description: "Věž",
+          description: "Optimalizaci rychlosti pohybu robota",
           isTrue: false
         },
         {
           choice: "C",
-          description: "Jezdec",
-          isTrue: false
+          description: "Výpočet pozice koncového efektoru robota ze znalosti kloubových souřadnic",
+          isTrue: true
         }
       ]
     },
