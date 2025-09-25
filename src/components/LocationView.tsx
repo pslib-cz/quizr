@@ -95,14 +95,14 @@ const LocationView = () => {
     }
   };
 
-  const handleNextLocation = () => {
-    if (location?.nextid) {
-      const nextLocation = locations.find(loc => loc.id === location.nextid);
-      if (nextLocation) {
-        navigate(`/location/${nextLocation.key}`);
-      }
-    }
-  };
+  // const handleNextLocation = () => {
+  //   if (location?.nextid) {
+  //     const nextLocation = locations.find(loc => loc.id === location.nextid);
+  //     if (nextLocation) {
+  //       navigate(`/location/${nextLocation.key}`);
+  //     }
+  //   }
+  // };
 
   const handleFinalSummary = () => {
     if (!location) return;
