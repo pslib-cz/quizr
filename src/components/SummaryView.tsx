@@ -179,7 +179,7 @@ const SummaryView = () => {
           onClick={() => setShowResetModal(true)} 
           className="btn btn-primary"
         >
-          Restart závodu
+          Restart mise
         </button>
       </div>
 
