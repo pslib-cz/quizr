@@ -3,36 +3,36 @@ import type { Location, Query } from './types';
 export const locations: Array<Location> = [
   {
     "id": 1,
-    "name": "Robot sbírá bohatství - sladká mise na šachovnici",
-    "key": "B110",
+    "name": "Digitální bohatství - kryptoměny",
+    "key": "B124",
     "nextid": 2,
-    "nextway": "Pokračujte vedlejšími dveřmi k elektrotechnické laboratoři pro další výzvu."
+    "nextway": "Navštivte laboratoř mechatroniky (chodba vpravo za výtahem) vedle prosklených dveří (naproti jídelnímu automatu)."
   },
   {
     "id": 2,
-    "name": "Bohatství pod proudem - elektrotechnická výzva",
-    "key": "B109",
+    "name": "Bohatství rukou a hlavy - objev svou vnitřní sílu",
+    "key": "B104",
     "nextid": 3,
-    "nextway": "Vydejte se do počítačové laboratoře u východu do dvora na digitální dobrodružství."
+    "nextway": "Pokračujte k robotickému stanovišti na této chodbě vpravo od jídelního automatu."
   },
   {
     "id": 3,
-    "name": "Digitální bohatství - kryptoměny",
-    "key": "B124",
+    "name": "Robot sbírá bohatství - sladká mise na šachovnici",
+    "key": "B110",
     "nextid": 4,
-    "nextway": "Navštivte laboratoř mechatroniky vedle prosklených dveří (naproti jídelnímu automatu)."
+    "nextway": "Pokračujte vedlejšími dveřmi k elektrotechnické laboratoři pro další výzvu."
   },
   {
     "id": 4,
-    "name": "Bohatství rukou a hlavy - objev svou vnitřní sílu",
-    "key": "B104",
+    "name": "Bohatství pod proudem - elektrotechnická výzva",
+    "key": "B109",
     "nextid": 5,
     "nextway": "Přejděte spojovací chodbou do chytré domácnosti elektro laboratoře na hlavní budově."
   },
   {
     "id": 5,
     "name": "Chytrá domácnost - Bohatství v každé žárovce",
-    "key": "A121",
+    "key": "A112",
     "nextid": 6,
     "nextway": "Pokračujte chodbou v přízemí směrem k hlavnímu vchodu k dalším otevřeným dveřím."
   },
@@ -158,7 +158,7 @@ export const queries: Array<Query> =
       ]
     },
     {
-      key: "A121",
+      key: "A112",
       question: "Otázka chytrá domácnost: Jaký je hlavní přínos chytré domácnosti?",
       answers: [
         {

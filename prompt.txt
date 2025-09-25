@@ -1,0 +1,81 @@
+Potřebuji vytvořit ve Vite React Typescript PWA aplikaci, která umoží postupně navštěvovat a aktivovat jednotlivé lokace závodu (ve skutečném exteriéru) a pokládat v nich vždy jednu soutěžní otázku, vkládat a uchovávat odpovědi na ně. 
+Lokace se vždy aktivuje vložením kódu ve formátu "A123". Kód bude zároveň sloužit jako identifkátor pokládané kvízové otázky. 
+Uživatel může vložit kód jako řetězec znaků na klávesnici, nebo načtením QR kódu přímo v aplikaci. 
+Je možné si kdykoliv zobrazit souhrn = tabulku (jiná page = komponenta) se všemi lokacemi, včetně vyobrazení jakou odpověď (A / B / C) uživatel zvolil a barevným rozlišením, zda byla správná nebo špatná. Řadit lze podle skutečného pořadí plnění (order) nebo podle předpokládaného pořadí plnění (určeno pomocí vlastnosti nextid)
+
+Use Case pro konkrétní případ je následující: 
+- lokace se aktivuje zadáním jejího kódu; pokud je kód načten přes qr kód, má formu URL - tedy např.: https://pslib-cz.github.io/quizr/#/code/A123
+- zobrazí se její název = krátký popis, dále otázka k této lokaci navázaná a její možné odpovědi
+- jednou zvolená odpověď je zaznamenána a již ji nelze změnit
+- pokud má lokace zodpovězenou otázku, je zobrazena instrukce "nextway" s popisem umístění následující lokace
+- lokace mají jasně dané pořadí; pokud je aktivována mimo pořadí, je zobrazeno upozornění na riziko vynechání jedné z lokací
+- na startovní lokaci (vždy s id: 1) jsou všechna potřebná data znovu načtena a resetována
+- poslední lokace má nextid null a není zobrazena otázka a odpovědi; je zobrazeno tlačítko s přesměrováním na souhrn
+
+Bude použit react-router s HashRouter pro spolehlivé nasazení na Github Pages. 
+Aplikace by měla fungovat i v offline režimu.
+Bude použit qr-scanner.
+
+Data lokací i otázek a odpovědí jsou pro zjednodušení součástí aplikace ve formátu JSON, aby nebylo potřeba žádné API nebo jiný backend.
+
+typ pro odpověď:
+type Answer { choice: string; description: string; isTrue: boolean; }
+
+typ pro otázku:
+type Query { key: string; question: string; answers: Array<Answer>; }
+
+typ pro lokaci:
+type Location { id: number; name: string; key: string; nextid: number; nextway: string }
+
+typ pro uchování informace o postupu závodem:
+type Waypoint {id: number; order: number | null; choice: string | null; correct: boolean | null; }
+type Way: Array<Waypoint>
+
+---
+
+refaktoruj #file:App.css tak, aby všechny barvy mohly být nastaveny pomocí proměnné a funkce light-dark() v :root, pro korektní zobrazování v light i dark mode
+
+---
+
+Upravit Route path="/" v #file:App.tsx tak, aby po startu aplikace byla zobrazena jen základní uvítací obrazovka.
+Bude obsahovat v podstatě stejný kód jako #file:LocationView.tsx s tím rozdílem, že se nezobrazí část s popisem lokace a kvíz. 
+Zobrazeny budou ovládací prvky (načíst QR kód a zadat Kód ručně)
+
+---
+
+V komponentě #file:SummaryView.tsx přidej modální potvrzení volby
+<Link to="/location/A001" onClick={() => WayStorage.resetWay()} className="btn btn-primary">
+Restart závodu
+</Link>
+
+---
+
+V #file:QRScannerView.tsx změnit
+<Link to="/" className="btn btn-primary">
+Zpět na hlavní stránku
+</Link>
+tak, aby se vracelo na předchozí stránku. (location history back)
+
+---
+
+v #file:LocationView.tsx upravit handleManualCodeSubmit tak, aby k navigaci došlo jen v případě, že zadaný kód odkazuje na platnou lokaci
+
+---
+
+Alert nahradit vhodnějším UI za použití React Modal Portal
+
+---
+
+upravit #file:vite.config.ts část manifest: {} tak, aby byla aplikace spustitelná po nainstalování do telefonu. produkční URL je https://pslib-cz.github.io/quizr/
+
+---
+
+Upravit blok <div className="answers"> v #file:LocationView.tsx tak, aby po zvolení nesprávné odpovědi bylo jasné, která odpověď je správná
+
+---
+
+Po aktivaci poslední lokace je zobrazena komponenta na řádku 112 souboru #file:LocationView.tsx
+Uprav tlačítko <Link to="/summary" className="btn btn-primary btn-block" >Zobrazit souhrn výsledků</Link>
+tak, aby bylo location.correct: true, pokud bude maximálně jedna odpověď špatně, jinak bude correct: false
+
+---

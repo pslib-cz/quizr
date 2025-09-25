@@ -214,12 +214,13 @@ const LocationView = () => {
         <div className="next-instruction">
           <h4>Následující lokace:</h4>
           <p>{location.nextway}</p>
+        </div>
+      )}
+{/*
           <button onClick={handleNextLocation} className="btn btn-primary">
             %debug% další lokace
           </button>
-        </div>
-      )}
-
+*/}
       <div className="navigation">
         <div className="actions">
           <Link to="/scan" className="btn btn-primary btn-stretch">Skenovat QR kód</Link>
