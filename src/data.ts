@@ -10,7 +10,7 @@ export const locations: Array<Location> = [
   },
   {
     "id": 2,
-    "name": "Bohatství rukou a hlavy - objev svou vnitřní sílu",
+    "name": "Bohatství rukou a hlavy - objev svou vnitřní dílnu",
     "key": "B104",
     "nextid": 3,
     "nextway": "Pokračujte k robotickému stanovišti na této chodbě vpravo od jídelního automatu."
