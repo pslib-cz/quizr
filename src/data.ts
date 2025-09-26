@@ -138,42 +138,52 @@ export const queries: Array<Query> =
     },
     {
       key: "B104",
-      question: "Do které doby je datováno první historicky doložené použití šroubu jako mechanismu?",
+      question: "Který z následujících jevů je nejčastější příčinou únavového lomu u rotačně namáhaných ocelových hřídelů?",
       answers: [
         {
           choice: "A",
-          description: "34000 let př. n. l. v Gruzii",
+          description: "Nedostatečná houževnatost materiálu při nízkých teplotách",
           isTrue: false
         },
         {
           choice: "B",
-          description: "3200 let př. n. l. v Mezopotámii",
-          isTrue: false
+          description: "Přítomnost vrubů a povrchových nerovností působících jako koncentrátory napětí",
+          isTrue: true
         },
         {
           choice: "C",
-          description: "400 let př. n. l. v Řecku",
-          isTrue: true
+          description: "Difuzní procesy vodíku vedoucí k vodíkové křehkosti materiálu",
+          isTrue: false
         }
       ]
     },
     {
       key: "A112",
-      question: "Jaký je hlavní přínos chytré domácnosti?",
+      question: "Po propojení světelného zdroje s řídícím prvkem se stalo:",
       answers: [
         {
           choice: "A",
-          description: "Zvyšuje pohodlí a efektivitu domácnosti prostřednictvím automatizace a vzdáleného ovládání",
-          isTrue: true
-        },
-        {
-          choice: "B",
-          description: "Snižuje náklady na energii a údržbu domácnosti",
+          description: "Světelný zdroj začal nepředvídatelně blikat.",
           isTrue: false
         },
         {
+          choice: "B",
+          description: "Světelný zdroj se rozsvítil.",
+          isTrue: true
+        },
+        {
           choice: "C",
-          description: "Zvyšuje bezpečnost domácnosti prostřednictvím monitorování a alarmů",
+          description: "Světelný zdroj se roztavil a vyhodil pojistky.",
+          isTrue: false
+        },
+        {
+          choice: "D",
+          description: "Rozsvítily se všechny světelné zdroje.",
+          isTrue: false
+        },
+        {
+          choice: "E",
+          description: "Zdroje se začaly rozsvěcovat a blikat podle programu.",
           isTrue: false
         }
       ]
