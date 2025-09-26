@@ -111,8 +111,8 @@ const LocationView = () => {
     const way = WayStorage.loadWay();
     const incorrectCount = way.filter(w => w.choice !== null && w.correct === false).length;
     
-    // Nastaviť correct: true pre aktuálnu lokáciu, ak je maximálne 1 nesprávna odpoveď
-    const finalCorrect = incorrectCount <= 1;
+    // Nastaviť correct: true pre aktuálnu lokáciu, ak je maximálne 3 nesprávné odpovedi
+    const finalCorrect = incorrectCount <= 3;
     WayStorage.updateWaypoint(location.id, 'FINAL', finalCorrect);
     
     navigate('/summary');

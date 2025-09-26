@@ -91,7 +91,7 @@ export const queries: Array<Query> =
     },
     {
       key: "B109",
-      question: "Otázka elektrotechnika: Který z následujících materiálů je nejlepším vodičem elektrického proudu?",
+      question: "Který z následujících materiálů je nejlepším vodičem elektrického proudu?",
       answers: [
         {
           choice: "A",
@@ -117,7 +117,7 @@ export const queries: Array<Query> =
     },
     {
       key: "B124",
-      question: "Otázka kryptoměny: Jaký je hlavní přínos kryptoměn?",
+      question: "Jaký je hlavní přínos kryptoměn?",
       answers: [
         {
           choice: "A",
@@ -138,28 +138,28 @@ export const queries: Array<Query> =
     },
     {
       key: "B104",
-      question: "Otázka mechatronika: Jaký je hlavní přínos mechatroniky?",
+      question: "Do které doby je datováno první historicky doložené použití šroubu jako mechanismu?",
       answers: [
         {
           choice: "A",
-          description: "Zvyšuje konkurenceschopnost firem na trhu díky inovacím a efektivnějším procesům",
+          description: "34000 let př. n. l. v Gruzii",
           isTrue: false
         },
         {
           choice: "B",
-          description: "Umožňuje rychlejší a flexibilnější reakci na změny v poptávce a výrobních podmínkách",
+          description: "3200 let př. n. l. v Mezopotámii",
           isTrue: false
         },
         {
           choice: "C",
-          description: "Zvyšuje efektivitu a přesnost výrobních procesů prostřednictvím integrace mechanických, elektronických a softwarových systémů",
+          description: "400 let př. n. l. v Řecku",
           isTrue: true
         }
       ]
     },
     {
       key: "A112",
-      question: "Otázka chytrá domácnost: Jaký je hlavní přínos chytré domácnosti?",
+      question: "Jaký je hlavní přínos chytré domácnosti?",
       answers: [
         {
           choice: "A",
